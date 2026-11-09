@@ -45,9 +45,16 @@ def test_make_quiz_selects_a_term_from_the_requested_lecture(monkeypatch):
     monkeypatch.setattr(tools.random, "choice", lambda candidates: candidates[-1])
 
     quiz = json.loads(tools.make_quiz(2))
+    related = next(
+        entry
+        for entry in tools.load_glossary()
+        if entry["id"] == selected["related"][-1]
+    )
 
     assert quiz["answer"] == selected["term"]
     assert selected["definition"] in quiz["question"]
+    assert quiz["related_answer"] == related["term"]
+    assert related["definition"] in quiz["related_question"]
 
 
 def test_make_quiz_reports_when_lecture_has_no_terms():
