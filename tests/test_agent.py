@@ -24,6 +24,7 @@ def test_base_tools_are_registered_and_called():
 
     offered = {t.name for t in model.last_model_request_parameters.function_tools}
     assert BASE_TOOLS <= offered  # 演習でツールを足しても壊れないよう「含む」で判定
+    assert "make_quiz" in offered
 
     called = {p.tool_name for p in _parts(result, ToolCallPart)}
     assert BASE_TOOLS <= called
